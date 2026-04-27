@@ -1,12 +1,14 @@
 'use client';
 
 import { Check } from 'lucide-react';
-import { useSyncExternalStore } from 'react';
+import { useEffect, useState } from 'react';
 
 const THEME_KEY = 'escritos-da-geo:theme';
+const VALID_THEMES = ['sepia', 'areia', 'salvia', 'lavanda'] as const;
+type ThemeId = (typeof VALID_THEMES)[number];
 
 interface ThemeOption {
-  id: string;
+  id: ThemeId;
   label: string;
   description: string;
   swatches: [string, string, string]; // bg, surface, primary
@@ -22,68 +24,74 @@ const THEMES: ThemeOption[] = [
   {
     id: 'areia',
     label: 'Areia',
-    description: 'Bege claro, mais arejado, menos quente.',
-    swatches: ['#faf6ee', '#ede5d2', '#8a7152'],
+    description: 'Bege quente da praia ao fim de tarde.',
+    swatches: ['#f0e6d2', '#e1d4ba', '#8a6a3c'],
   },
   {
     id: 'salvia',
     label: 'Sálvia',
     description: 'Verde acinzentado — vibe de jardim quieto.',
-    swatches: ['#f3f5ed', '#e2e7d3', '#5a7048'],
+    swatches: ['#e6ecd8', '#d2dabe', '#4a6038'],
   },
   {
     id: 'lavanda',
     label: 'Lavanda',
-    description: 'Pastel violeta sutil, ar romântico.',
-    swatches: ['#f6f3f8', '#e7dfed', '#6e5b80'],
+    description: 'Violeta romântico de fim de tarde.',
+    swatches: ['#ebe2f3', '#d4c5e3', '#5e4870'],
   },
 ];
 
-/* useSyncExternalStore — pattern recomendado pra ler localStorage no React 19 */
-
-function subscribe(callback: () => void) {
-  if (typeof window === 'undefined') return () => undefined;
-  window.addEventListener('storage', callback);
-  return () => window.removeEventListener('storage', callback);
-}
-
-function getSnapshot(): string {
-  if (typeof window === 'undefined') return 'sepia';
-  return window.localStorage.getItem(THEME_KEY) ?? 'sepia';
-}
-
-function getServerSnapshot(): string {
-  return 'sepia';
-}
-
-function applyTheme(themeId: string) {
+function applyToDom(themeId: ThemeId) {
   if (typeof document === 'undefined') return;
+  const root = document.documentElement;
   if (themeId === 'sepia') {
-    document.documentElement.removeAttribute('data-theme');
+    root.removeAttribute('data-theme');
   } else {
-    document.documentElement.setAttribute('data-theme', themeId);
+    root.setAttribute('data-theme', themeId);
   }
+}
+
+function readFromStorage(): ThemeId {
+  if (typeof window === 'undefined') return 'sepia';
+  const v = window.localStorage.getItem(THEME_KEY);
+  return (VALID_THEMES as readonly string[]).includes(v ?? '') ? (v as ThemeId) : 'sepia';
 }
 
 export function ThemePicker() {
-  const current = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  // Sempre inicia 'sepia' no SSR; hidratamos do localStorage no efeito.
+  const [current, setCurrent] = useState<ThemeId>('sepia');
+  const [hydrated, setHydrated] = useState(false);
 
-  function selectTheme(id: string) {
-    if (typeof window === 'undefined') return;
-    if (id === 'sepia') {
-      window.localStorage.removeItem(THEME_KEY);
-    } else {
-      window.localStorage.setItem(THEME_KEY, id);
+  useEffect(() => {
+    const stored = readFromStorage();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hidratação one-shot
+    setCurrent(stored);
+    setHydrated(true);
+    // O atributo já foi aplicado pelo anti-FOUT script no <head>;
+    // garantimos por segurança caso o script tenha falhado.
+    applyToDom(stored);
+  }, []);
+
+  function selectTheme(id: ThemeId) {
+    setCurrent(id);
+    if (typeof window !== 'undefined') {
+      if (id === 'sepia') {
+        window.localStorage.removeItem(THEME_KEY);
+      } else {
+        window.localStorage.setItem(THEME_KEY, id);
+      }
     }
-    applyTheme(id);
-    // Dispara storage event manualmente pra outros componentes ouvirem
-    window.dispatchEvent(new Event('storage'));
+    applyToDom(id);
   }
 
   return (
-    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <div
+      className="grid grid-cols-1 gap-3 sm:grid-cols-2"
+      // suprime mismatch — current sempre 'sepia' no SSR, real no client
+      suppressHydrationWarning
+    >
       {THEMES.map((theme) => {
-        const isActive = current === theme.id;
+        const isActive = hydrated && current === theme.id;
         return (
           <button
             key={theme.id}
@@ -96,7 +104,6 @@ export function ThemePicker() {
                 : 'border-outline-variant/40 bg-surface-container-lowest hover:border-primary/40 hover:shadow-tactile'
             }`}
           >
-            {/* Swatches */}
             <div className="flex shrink-0 gap-1">
               {theme.swatches.map((color, i) => (
                 <span
@@ -108,7 +115,6 @@ export function ThemePicker() {
               ))}
             </div>
 
-            {/* Label + descrição */}
             <div className="min-w-0 flex-1">
               <div className="flex items-center gap-2">
                 <span

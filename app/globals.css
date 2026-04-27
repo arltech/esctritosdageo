@@ -118,91 +118,91 @@
  * Persistência no localStorage 'escritos-da-geo:theme'.
  * ---------------------------------------------------------------------------- */
 
-/* TEMA: AREIA — bege mais claro, menos quente, mais arejado */
+/* TEMA: AREIA — areia clara, contraste óbvio com sépia */
 [data-theme='areia'] {
-  --color-background: #faf6ee;
-  --color-surface: #faf6ee;
-  --color-surface-bright: #faf6ee;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f4eedf;
-  --color-surface-container: #ede5d2;
-  --color-surface-container-high: #e6dcc6;
-  --color-surface-variant: #ddd1bb;
+  --color-background: #f0e6d2;
+  --color-surface: #f0e6d2;
+  --color-surface-bright: #f0e6d2;
+  --color-surface-container-lowest: #fdf9f0;
+  --color-surface-container-low: #ebe1cb;
+  --color-surface-container: #e1d4ba;
+  --color-surface-container-high: #d6c7a7;
+  --color-surface-variant: #c4b291;
 
   --color-on-surface: #2a2519;
   --color-on-surface-variant: #5a5142;
 
-  --color-primary: #8a7152;
-  --color-primary-fixed: #ede0c9;
+  --color-primary: #8a6a3c;
+  --color-primary-fixed: #ecd9b6;
   --color-on-primary: #ffffff;
   --color-on-primary-fixed: #2a1f0e;
 
   --color-secondary: #6b7458;
-  --color-secondary-container: #e2e8d0;
+  --color-secondary-container: #d8e0c2;
   --color-on-secondary-container: #1f2614;
 
   --color-tertiary: #966a35;
-  --color-tertiary-fixed: #ffe1bf;
+  --color-tertiary-fixed: #ffd9a8;
 
-  --color-outline-variant: #cdc1ab;
+  --color-outline-variant: #c4b291;
 }
 
-/* TEMA: SÁLVIA — verde acinzentado dominante, vibe de jardim quieto */
+/* TEMA: SÁLVIA — verde acinzentado bem visível */
 [data-theme='salvia'] {
-  --color-background: #f3f5ed;
-  --color-surface: #f3f5ed;
-  --color-surface-bright: #f3f5ed;
-  --color-surface-container-lowest: #fdfdf9;
-  --color-surface-container-low: #ebeee0;
-  --color-surface-container: #e2e7d3;
-  --color-surface-container-high: #d8dec7;
-  --color-surface-variant: #cad2b6;
+  --color-background: #e6ecd8;
+  --color-surface: #e6ecd8;
+  --color-surface-bright: #e6ecd8;
+  --color-surface-container-lowest: #f6f8ed;
+  --color-surface-container-low: #dde4cd;
+  --color-surface-container: #d2dabe;
+  --color-surface-container-high: #c5cdac;
+  --color-surface-variant: #aab39a;
 
   --color-on-surface: #1d2118;
   --color-on-surface-variant: #4a513f;
 
-  --color-primary: #5a7048;
-  --color-primary-fixed: #d8e4c4;
+  --color-primary: #4a6038;
+  --color-primary-fixed: #c8d8b0;
   --color-on-primary: #ffffff;
   --color-on-primary-fixed: #1d2710;
 
   --color-secondary: #6b5c4d;
-  --color-secondary-container: #ede1cc;
+  --color-secondary-container: #dccfb8;
   --color-on-secondary-container: #261d10;
 
   --color-tertiary: #8a6a35;
   --color-tertiary-fixed: #ffe1bf;
 
-  --color-outline-variant: #b9c0a3;
+  --color-outline-variant: #aab39a;
 }
 
-/* TEMA: LAVANDA — pastel violeta sutil, ar romântico */
+/* TEMA: LAVANDA — violeta claro, ar romântico óbvio */
 [data-theme='lavanda'] {
-  --color-background: #f6f3f8;
-  --color-surface: #f6f3f8;
-  --color-surface-bright: #f6f3f8;
-  --color-surface-container-lowest: #fffefe;
-  --color-surface-container-low: #efeaf3;
-  --color-surface-container: #e7dfed;
-  --color-surface-container-high: #ddd2e5;
-  --color-surface-variant: #cfc3d8;
+  --color-background: #ebe2f3;
+  --color-surface: #ebe2f3;
+  --color-surface-bright: #ebe2f3;
+  --color-surface-container-lowest: #f8f4fc;
+  --color-surface-container-low: #e0d4ec;
+  --color-surface-container: #d4c5e3;
+  --color-surface-container-high: #c5b2d8;
+  --color-surface-variant: #b4a0c8;
 
   --color-on-surface: #221c2a;
   --color-on-surface-variant: #4d4458;
 
-  --color-primary: #6e5b80;
-  --color-primary-fixed: #e8dcf2;
+  --color-primary: #5e4870;
+  --color-primary-fixed: #ddc8eb;
   --color-on-primary: #ffffff;
   --color-on-primary-fixed: #1c0e2c;
 
   --color-secondary: #7c6d5a;
-  --color-secondary-container: #ece4d3;
+  --color-secondary-container: #e4d4c0;
   --color-on-secondary-container: #261d10;
 
   --color-tertiary: #9d5a7b;
-  --color-tertiary-fixed: #ffd9e8;
+  --color-tertiary-fixed: #ffc8de;
 
-  --color-outline-variant: #c8bbd0;
+  --color-outline-variant: #b4a0c8;
 }
 
 /* ----------------------------------------------------------------------------
@@ -222,6 +222,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  transition:
+    background-color 300ms ease,
+    color 300ms ease;
 }
 
 h1,
