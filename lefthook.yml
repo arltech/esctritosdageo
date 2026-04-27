@@ -1,0 +1,19 @@
+# Lefthook config — https://lefthook.dev/configuration/
+# Pre-commit hooks: format, lint, typecheck on staged files.
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: prettier-check
+      glob: '*.{js,jsx,ts,tsx,mjs,cjs,json,css,md,yml,yaml}'
+      run: pnpm exec prettier --check {staged_files}
+      stage_fixed: true
+
+    - name: eslint
+      glob: '*.{js,jsx,ts,tsx,mjs,cjs}'
+      run: pnpm exec eslint {staged_files}
+
+    - name: typecheck
+      glob: '*.{ts,tsx}'
+      run: pnpm exec tsc --noEmit
+      # Note: tsc needs full project context, not just staged files

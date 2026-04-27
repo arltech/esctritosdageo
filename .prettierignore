@@ -1,0 +1,28 @@
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Dependencies
+node_modules/
+pnpm-lock.yaml
+
+# Generated
+next-env.d.ts
+*.tsbuildinfo
+
+# Env
+.env*
+!.env.local.example
+
+# Public assets
+public/
+
+# Docs gerados ou imutáveis
+docs/brief.md
+docs/prd.md
+docs/architecture.md
+
+# Markdown convencional do Next 16 (geramos manualmente)
+# (mantemos AGENTS.md/CLAUDE.md formatados pelo Prettier)
