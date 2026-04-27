@@ -48,6 +48,14 @@ export async function saveText(
   const title = typeof titleRaw === 'string' ? titleRaw.trim().slice(0, TITLE_MAX) : '';
   const body = typeof bodyRaw === 'string' ? bodyRaw.slice(0, BODY_MAX) : '';
 
+  // [DEBUG] Logging temporário pra investigar imagens não chegando
+  console.error('[saveText.debug]', {
+    bodyLength: body.length,
+    hasImg: body.includes('<img'),
+    preview: body.slice(0, 300),
+    titleLength: title.length,
+  });
+
   if (!title && !body.trim()) {
     return { ok: false, error: 'Adicione um título ou escreva alguma coisa antes de salvar.' };
   }
