@@ -38,6 +38,8 @@ export function getSupabaseAdmin() {
   }
 
   cached = createClient<Database>(url, serviceRoleKey, {
+    // Schema dedicado em ARLIA — runtime aponta pra escritos, types ficam públicos.
+    db: { schema: 'escritos' as 'public' },
     auth: {
       autoRefreshToken: false,
       persistSession: false,

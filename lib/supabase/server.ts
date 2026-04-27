@@ -21,6 +21,11 @@ export async function createServerSupabaseClient() {
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {
+      // Schema dedicado pra coexistir com outras apps no projeto Supabase ARLIA.
+      // Precisa estar exposto em Settings > API > Exposed schemas.
+      // Cast: nossa Database type continua com 'public' como nome do schema
+      // (estrutura idêntica), mas no runtime o Postgres retorna do escritos.
+      db: { schema: 'escritos' as 'public' },
       cookies: {
         getAll() {
           return cookieStore.getAll();

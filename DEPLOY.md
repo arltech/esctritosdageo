@@ -1,58 +1,65 @@
 # Deploy — Escritos da Geo
 
-Guia passo a passo pra subir o app: **Supabase (ARLIA) → Vercel**.
+Guia passo a passo pra subir o app: **Supabase ARLIA → Vercel**.
 
 ---
 
-## 1. Supabase (projeto ARLIA)
+## 1. Supabase ARLIA
 
-### 1.1 Criar projeto
+> **Status atual**: schema `escritos` JÁ FOI APLICADO no projeto ARLIA (`kodzqdvrthkxyafbrroo`). Tabelas, triggers, RLS e buckets prontos. Falta o passo manual de exposição do schema + criar user.
 
-1. Entre no Supabase dashboard com a conta ARLIA
-2. **New project** → nome `escritos-da-geo` → região mais próxima (ex.: `us-east-1`) → senha forte do Postgres
-3. Aguarde provisionar (~2 min)
+### 1.1 Schema (já aplicado)
 
-### 1.2 Aplicar schema
+O schema `escritos` foi criado dentro do projeto ARLIA pra coexistir com as outras apps do banco (trafia, ss\_\*, arlbrief\_\*, etc.) sem conflitar com a função `handle_new_user` do trafia.
 
-1. No projeto criado: **SQL Editor** → **New query**
-2. Cole o conteúdo INTEIRO de [`deploy/SCHEMA.sql`](./deploy/SCHEMA.sql)
-3. **Run** — deve completar sem erros (todas as instruções são idempotentes)
+Estrutura:
 
-O schema cria:
+- **Schema Postgres**: `escritos`
+- **Tabelas**: `escritos.profiles`, `escritos.texts`, `escritos.wall_items`
+- **Enums**: `escritos.text_status`, `escritos.wall_item_status`
+- **Trigger em auth.users**: `on_auth_user_created_escritos` chama `escritos.handle_new_escritos_user` (auto-cria profile)
+- **Buckets**: `escritos-wall-images` (privado, 5 MB), `escritos-avatars` (público, 2 MB)
+- **RLS** ativa em todas as tabelas + storage policies por bucket prefixado
 
-- Tabelas: `profiles`, `texts`, `wall_items`
-- Enums: `text_status`, `wall_item_status`
-- Indexes (incluindo GIN em `tags` e parciais em `status='public'` / `on_home=true`)
-- Triggers: `handle_new_user` (auto-cria profile) e `set_updated_at`
-- RLS policies em todas as tabelas (owner-only + public selects condicionais)
-- Storage buckets: `wall-images` (privado, 5 MB) e `avatars` (público, 2 MB)
-- Storage policies por bucket
+Re-aplicar (idempotente): cole [`deploy/SCHEMA.sql`](./deploy/SCHEMA.sql) no SQL Editor.
+
+### 1.2 Expor schema na API ⚠️ **OBRIGATÓRIO**
+
+O cliente Supabase (PostgREST) só enxerga schemas explicitamente expostos:
+
+1. Dashboard ARLIA → **Settings** → **API**
+2. **Exposed schemas**: adicionar `escritos`
+   ```
+   public, graphql_public, escritos
+   ```
+3. **Save** — PostgREST recarrega automaticamente
+
+Sem esse passo, qualquer query de `from('profiles')` retorna erro 404.
 
 ### 1.3 Criar usuário inicial
 
-1. **Authentication** → **Users** → **Add user** → **Create new user**
+1. Dashboard ARLIA → **Authentication** → **Users** → **Add user** → **Create new user**
 2. Email: `lucas@arltech.emp.br` (ou o que vai pra `ALLOWED_EMAIL`)
 3. Password: senha forte
-4. **Auto Confirm User: ON** (senão precisa de email confirmation flow)
+4. **Auto Confirm User: ON**
 5. **Create user**
 
-O trigger `handle_new_user` cria o profile automaticamente com `display_name='Geovana'`.
+O trigger `on_auth_user_created_escritos` cria o profile automaticamente em `escritos.profiles` com `display_name='Geovana'`.
 
-### 1.4 Configurar provider de auth
+### 1.4 Provider de email
 
-1. **Authentication** → **Providers** → **Email**
-2. Garanta que está habilitado
-3. **Confirm email**: pode deixar OFF pra MVP (ou ON se quiser flow de confirmação)
+1. Dashboard ARLIA → **Authentication** → **Providers** → **Email**
+2. Habilitado
+3. **Confirm email**: deixar OFF pra MVP
 
-### 1.5 Coletar credenciais
+### 1.5 Credenciais (já coletadas via MCP)
 
-1. **Project Settings** → **API**
-2. Copie:
-   - **Project URL** → vai em `NEXT_PUBLIC_SUPABASE_URL`
-   - **anon public** → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - **service_role** (clique em "Reveal") → `SUPABASE_SERVICE_ROLE_KEY` ⚠️ **secreta**
-
-Guarde — vai usar na Vercel.
+| Variável                        | Valor / onde encontrar                                                                                |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | `https://kodzqdvrthkxyafbrroo.supabase.co`                                                            |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Dashboard → Settings → API → "Project API keys" → **anon public** (legacy ou novo `sb_publishable_*`) |
+| `SUPABASE_SERVICE_ROLE_KEY`     | Mesma página → **service_role** (clique "Reveal") ⚠️ **secreta**                                      |
+| `ALLOWED_EMAIL`                 | mesmo email cadastrado no passo 1.3                                                                   |
 
 ---
 
@@ -60,50 +67,43 @@ Guarde — vai usar na Vercel.
 
 ### 2.1 Importar repo
 
-1. Entre na Vercel dashboard
-2. **Add New** → **Project** → **Import Git Repository**
-3. Selecione `arltech/esctritosdageo`
-4. **Framework Preset**: Next.js (auto-detectado)
-5. **Root Directory**: `./` (default)
+1. Vercel dashboard → **Add New** → **Project** → **Import Git Repository**
+2. Selecione `arltech/esctritosdageo`
+3. **Framework Preset**: Next.js (auto-detectado)
+4. **Root Directory**: `./`
 
 ### 2.2 Environment Variables
 
-Antes de clicar Deploy, abra **Environment Variables** e adicione:
+Antes de Deploy, adicione (Production, Preview, Development):
 
-| Nome                            | Valor                     | Onde                             |
-| ------------------------------- | ------------------------- | -------------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`      | URL do passo 1.5          | Production, Preview, Development |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | anon key do passo 1.5     | Production, Preview, Development |
-| `SUPABASE_SERVICE_ROLE_KEY`     | service_role do passo 1.5 | **Production only** (sensível)   |
-| `ALLOWED_EMAIL`                 | `lucas@arltech.emp.br`    | Production, Preview, Development |
-
-> **Não setar agora** (opcional): `SENTRY_DSN`, `NEXT_PUBLIC_SENTRY_DSN`. Adicione quando integrar Sentry.
+| Nome                            | Valor                                           |
+| ------------------------------- | ----------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | `https://kodzqdvrthkxyafbrroo.supabase.co`      |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | anon key do dashboard                           |
+| `SUPABASE_SERVICE_ROLE_KEY`     | service_role do dashboard (**Production only**) |
+| `ALLOWED_EMAIL`                 | `lucas@arltech.emp.br` (ou seu email)           |
 
 ### 2.3 Deploy
 
-1. Clique **Deploy**
-2. Acompanhe o build (~2-3 min)
-3. URL provisória: `escritos-da-geo-{hash}.vercel.app`
+1. **Deploy** — build leva ~2-3 min
+2. URL provisória: `escritos-da-geo-{hash}.vercel.app`
 
 ### 2.4 Domínio (opcional)
 
-- **Settings** → **Domains** → adicionar domínio próprio
-- Configurar DNS conforme instruções
+**Settings → Domains** → adicionar domínio próprio.
 
 ---
 
 ## 3. Verificação pós-deploy
 
-Acesse o domínio e:
-
-- [ ] **Landing** carrega com hero "Escritos da Geo" + post-it
-- [ ] `/entrar` aceita o email/senha cadastrado
-- [ ] Pós-login redireciona pra `/casa`
+- [ ] Landing carrega com hero "Escritos da Geo"
+- [ ] `/entrar` aceita email/senha
+- [ ] Pós-login → `/casa`
 - [ ] `/escrever` abre editor com toolbar superior
-- [ ] Salvar entrada cria registro em `texts` (verificar via Supabase Table Editor)
-- [ ] Upload de foto na `/casa` cria registro em `wall_items` + arquivo em `wall-images` bucket
-- [ ] `/escritas` lista entradas salvas
-- [ ] Toggle público em `/escritas/[id]` gera slug e a URL `/p/[slug]` carrega anonimamente
+- [ ] Salvar entrada cria registro em `escritos.texts` (Table Editor → schema escritos)
+- [ ] Upload de foto cria `escritos.wall_items` + arquivo em bucket `escritos-wall-images`
+- [ ] `/escritas` lista entradas
+- [ ] Toggle público gera slug, `/p/[slug]` carrega anonimamente
 
 ---
 
@@ -111,32 +111,32 @@ Acesse o domínio e:
 
 ### Schema changes
 
-1. Crie novo arquivo em `supabase/migrations/00XX_descricao.sql`
-2. Aplique manualmente no Supabase ARLIA (SQL Editor)
-3. Atualize `deploy/SCHEMA.sql` (consolidado) se for relevante pra novos deploys
-4. Commit + push → Vercel rebuilda automaticamente
+1. Crie `supabase/migrations/00XX_descricao.sql` (local) com prefixo de schema: `create table escritos.X` etc.
+2. Aplique manualmente em ARLIA via SQL Editor OU via MCP `apply_migration`
+3. Atualize `deploy/SCHEMA.sql` consolidado se for relevante
+4. Commit + push → Vercel rebuilda
 
 ### Env vars novas
 
-- Adicione em `.env.local.example` (só placeholder)
-- Adicione na Vercel via **Settings** → **Environment Variables**
-- Trigger novo deploy (Vercel faz auto se setar Production)
+- Adicione em `.env.local.example`
+- Adicione em **Vercel → Settings → Environment Variables**
 
 ---
 
 ## Troubleshooting
 
-**Build falha na Vercel com "rehype-sanitize"**: confirme que `pnpm-lock.yaml` está commitado e a Vercel detectou pnpm.
+**`relation "public.profiles" does not exist`**: você esqueceu de expor `escritos` em Settings → API → Exposed schemas (passo 1.2).
+
+**Build falha com "rehype-sanitize"**: confirme `pnpm-lock.yaml` commitado e Vercel detectou pnpm.
 
 **Login retorna "Email ou senha incorretos"**: confirme `ALLOWED_EMAIL` na Vercel = email do user no Supabase.
 
-**Upload de imagem 401**: confirme que `SUPABASE_SERVICE_ROLE_KEY` está setado em Production.
+**Upload 401**: confirme `SUPABASE_SERVICE_ROLE_KEY` em Production.
 
-**RLS bloqueando insert**: rode no SQL Editor `select * from pg_policies where tablename = 'texts';` pra ver policies ativas. Schema deveria ter criado todas.
+**Storage policy não aplicada**: schema usa `drop policy if exists` antes de criar — re-rodar o SQL é seguro.
 
-**Storage policy não aplicada**: o schema tenta `drop policy if exists` antes de criar. Se conflitar, rode manualmente no SQL Editor:
+**RLS bloqueando insert**: verificar policies em `escritos.texts` etc.:
 
 ```sql
-drop policy if exists "wall_images_owner_upload" on storage.objects;
--- ... depois cole de novo a CREATE POLICY do SCHEMA.sql
+select * from pg_policies where schemaname = 'escritos';
 ```

@@ -9,7 +9,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
-const EDITOR_BUCKET = 'wall-images';
+const EDITOR_BUCKET = 'escritos-wall-images';
 const EDITOR_SIGNED_URL_TTL = 60 * 60 * 24; // 24h
 const TITLE_MAX = 200;
 const BODY_MAX = 200_000;

@@ -6,7 +6,7 @@ import { createServerSupabaseClient } from '@/lib/supabase/server';
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_BYTES = 5 * 1024 * 1024;
-const BUCKET = 'wall-images';
+const BUCKET = 'escritos-wall-images';
 
 export type UploadResult = { ok: true } | { ok: false; error: string };
 

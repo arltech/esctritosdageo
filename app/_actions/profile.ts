@@ -4,7 +4,7 @@ import { revalidatePath } from 'next/cache';
 
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 
-const AVATAR_BUCKET = 'avatars';
+const AVATAR_BUCKET = 'escritos-avatars';
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_AVATAR_BYTES = 2 * 1024 * 1024;
 

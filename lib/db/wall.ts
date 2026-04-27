@@ -4,7 +4,7 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import type { WallItem, WallItemWithUrl } from '@/lib/types';
 
-const BUCKET = 'wall-images';
+const BUCKET = 'escritos-wall-images';
 const SIGNED_URL_TTL = 3600; // 1 hora pra mural privado
 const PUBLIC_SIGNED_URL_TTL = 60 * 60 * 24; // 24h pra landing pública
 

@@ -4,7 +4,7 @@ import { getSupabaseAdmin } from '@/lib/supabase/admin';
 import { createServerSupabaseClient } from '@/lib/supabase/server';
 import type { Profile } from '@/lib/types';
 
-const AVATAR_BUCKET = 'avatars';
+const AVATAR_BUCKET = 'escritos-avatars';
 
 /**
  * Lê o profile do usuário autenticado. Retorna null se não autenticado.
