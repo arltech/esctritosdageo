@@ -1,15 +1,20 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Lora } from 'next/font/google';
+
 import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+/**
+ * Tipografia primária — Lora (serifada, legível, atemporal).
+ * Decisão sujeita a re-avaliação após mockup tipográfico com Geovana
+ * (Lora vs Source Serif 4 vs Fraunces vs EB Garamond).
+ *
+ * `display: 'swap'` evita FOIT (Flash of Invisible Text); aceita FOUT
+ * com fallback de sistema serif durante 100ms iniciais.
+ */
+const lora = Lora({
+  variable: '--font-serif',
+  subsets: ['latin', 'latin-ext'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -23,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="pt-BR" className={`${lora.variable} h-full antialiased`}>
+      <body className="bg-paper text-ink min-h-full font-serif">{children}</body>
     </html>
   );
 }
