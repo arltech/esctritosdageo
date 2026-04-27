@@ -1,4 +1,4 @@
-import { NotebookPen, Plus } from 'lucide-react';
+import { ArrowLeft, NotebookPen, PenLine } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 
@@ -15,9 +15,18 @@ export default async function EscritasPage() {
   const texts = await listMyTexts();
 
   return (
-    <main className="min-h-screen px-4 pt-8 pb-16 sm:px-8 sm:pt-12">
+    <main className="min-h-screen px-4 pt-6 pb-16 sm:px-8 sm:pt-10">
       <Container as="div" className="!px-0">
-        <header className="mb-8 flex items-end justify-between">
+        {/* Back link discreto acima do título */}
+        <Link
+          href="/casa"
+          className="text-on-surface-variant hover:text-on-surface font-sans mb-4 inline-flex items-center gap-1.5 text-sm no-underline transition-colors"
+        >
+          <ArrowLeft size={14} strokeWidth={1.6} />
+          casa
+        </Link>
+
+        <header className="mb-8 flex items-end justify-between gap-4">
           <h1
             className="text-on-surface text-3xl font-medium tracking-tight sm:text-4xl"
             style={{ fontFamily: 'var(--font-serif)' }}
@@ -27,10 +36,15 @@ export default async function EscritasPage() {
           {texts.length > 0 ? (
             <Link
               href="/escrever"
-              className="bg-primary text-on-primary hover:bg-primary-container font-sans inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm tracking-wide no-underline transition-colors"
+              aria-label="Nova escrita"
+              className="bg-primary text-on-primary hover:bg-primary-container shadow-tactile font-sans group inline-flex shrink-0 items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium tracking-wide no-underline transition-all hover:-translate-y-0.5"
             >
-              <Plus size={14} strokeWidth={1.8} />
-              escrever
+              <PenLine
+                size={15}
+                strokeWidth={1.8}
+                className="transition-transform group-hover:rotate-[-8deg]"
+              />
+              <span>nova escrita</span>
             </Link>
           ) : null}
         </header>
@@ -67,9 +81,13 @@ function EmptyState() {
 
       <Link
         href="/escrever"
-        className="bg-primary text-on-primary hover:bg-primary-container font-sans inline-flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-medium tracking-wide no-underline transition-colors"
+        className="bg-primary text-on-primary hover:bg-primary-container shadow-tactile font-sans group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium tracking-wide no-underline transition-all hover:-translate-y-0.5"
       >
-        <Plus size={14} strokeWidth={1.8} />
+        <PenLine
+          size={15}
+          strokeWidth={1.8}
+          className="transition-transform group-hover:rotate-[-8deg]"
+        />
         Começar a escrever
       </Link>
 
