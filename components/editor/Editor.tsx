@@ -577,11 +577,12 @@ export function Editor({
           </div>
         </div>
 
+        {/* Visually hidden — não usar `hidden`/display:none, iOS bloqueia .click() */}
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp"
-          className="hidden"
+          accept="image/*"
+          className="pointer-events-none absolute h-px w-px overflow-hidden border-0 p-0 opacity-0"
           onChange={handleImageSelected}
         />
       </form>

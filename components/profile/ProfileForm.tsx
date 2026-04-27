@@ -6,7 +6,8 @@ import { useActionState, useEffect, useRef, useState } from 'react';
 import { updateProfile, type UpdateProfileResult } from '@/app/_actions/profile';
 import type { Profile } from '@/lib/types';
 
-const ACCEPT = 'image/jpeg,image/png,image/webp';
+// image/* funciona melhor em mobile — validação real é server-side em updateProfile.
+const ACCEPT = 'image/*';
 
 interface ProfileFormProps {
   profile: Profile;

@@ -113,6 +113,99 @@
 }
 
 /* ----------------------------------------------------------------------------
+ * Temas alternativos — selecionados por [data-theme] no <html>.
+ * Sépia (default) está no @theme acima. Cada tema sobrescreve só o necessário.
+ * Persistência no localStorage 'escritos-da-geo:theme'.
+ * ---------------------------------------------------------------------------- */
+
+/* TEMA: AREIA — bege mais claro, menos quente, mais arejado */
+[data-theme='areia'] {
+  --color-background: #faf6ee;
+  --color-surface: #faf6ee;
+  --color-surface-bright: #faf6ee;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #f4eedf;
+  --color-surface-container: #ede5d2;
+  --color-surface-container-high: #e6dcc6;
+  --color-surface-variant: #ddd1bb;
+
+  --color-on-surface: #2a2519;
+  --color-on-surface-variant: #5a5142;
+
+  --color-primary: #8a7152;
+  --color-primary-fixed: #ede0c9;
+  --color-on-primary: #ffffff;
+  --color-on-primary-fixed: #2a1f0e;
+
+  --color-secondary: #6b7458;
+  --color-secondary-container: #e2e8d0;
+  --color-on-secondary-container: #1f2614;
+
+  --color-tertiary: #966a35;
+  --color-tertiary-fixed: #ffe1bf;
+
+  --color-outline-variant: #cdc1ab;
+}
+
+/* TEMA: SÁLVIA — verde acinzentado dominante, vibe de jardim quieto */
+[data-theme='salvia'] {
+  --color-background: #f3f5ed;
+  --color-surface: #f3f5ed;
+  --color-surface-bright: #f3f5ed;
+  --color-surface-container-lowest: #fdfdf9;
+  --color-surface-container-low: #ebeee0;
+  --color-surface-container: #e2e7d3;
+  --color-surface-container-high: #d8dec7;
+  --color-surface-variant: #cad2b6;
+
+  --color-on-surface: #1d2118;
+  --color-on-surface-variant: #4a513f;
+
+  --color-primary: #5a7048;
+  --color-primary-fixed: #d8e4c4;
+  --color-on-primary: #ffffff;
+  --color-on-primary-fixed: #1d2710;
+
+  --color-secondary: #6b5c4d;
+  --color-secondary-container: #ede1cc;
+  --color-on-secondary-container: #261d10;
+
+  --color-tertiary: #8a6a35;
+  --color-tertiary-fixed: #ffe1bf;
+
+  --color-outline-variant: #b9c0a3;
+}
+
+/* TEMA: LAVANDA — pastel violeta sutil, ar romântico */
+[data-theme='lavanda'] {
+  --color-background: #f6f3f8;
+  --color-surface: #f6f3f8;
+  --color-surface-bright: #f6f3f8;
+  --color-surface-container-lowest: #fffefe;
+  --color-surface-container-low: #efeaf3;
+  --color-surface-container: #e7dfed;
+  --color-surface-container-high: #ddd2e5;
+  --color-surface-variant: #cfc3d8;
+
+  --color-on-surface: #221c2a;
+  --color-on-surface-variant: #4d4458;
+
+  --color-primary: #6e5b80;
+  --color-primary-fixed: #e8dcf2;
+  --color-on-primary: #ffffff;
+  --color-on-primary-fixed: #1c0e2c;
+
+  --color-secondary: #7c6d5a;
+  --color-secondary-container: #ece4d3;
+  --color-on-secondary-container: #261d10;
+
+  --color-tertiary: #9d5a7b;
+  --color-tertiary-fixed: #ffd9e8;
+
+  --color-outline-variant: #c8bbd0;
+}
+
+/* ----------------------------------------------------------------------------
  * Base typography — editorial primeiro, marginalia em tensão.
  * ---------------------------------------------------------------------------- */
 

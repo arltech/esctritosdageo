@@ -191,6 +191,11 @@ try {
   if (writing && writingMap[writing]) {
     document.documentElement.style.setProperty('--font-writing', 'var(' + writingMap[writing] + '), cursive');
   }
+  // Tema (paleta) — aplica antes do CSS render pra evitar flash
+  var theme = localStorage.getItem('escritos-da-geo:theme');
+  if (theme && ['areia','salvia','lavanda'].indexOf(theme) !== -1) {
+    document.documentElement.setAttribute('data-theme', theme);
+  }
 } catch (e) {}
 `.trim();
 

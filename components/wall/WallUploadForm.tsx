@@ -5,7 +5,9 @@ import { useActionState, useEffect, useRef, useState } from 'react';
 
 import { uploadWallItem, type UploadResult } from '@/app/_actions/wall';
 
-const ACCEPT = 'image/jpeg,image/png,image/webp';
+// image/* funciona melhor em mobile (iOS converte HEIC pra JPEG na hora do upload)
+// validação real de mime acontece server-side em uploadWallItem.
+const ACCEPT = 'image/*';
 
 export function WallUploadForm() {
   const formRef = useRef<HTMLFormElement>(null);

@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 
 import { Container } from '@/components/layout/Container';
 import { FontPicker } from '@/components/preferences/FontPicker';
+import { ThemePicker } from '@/components/preferences/ThemePicker';
 import { PasswordForm } from '@/components/profile/PasswordForm';
 import { ProfileForm } from '@/components/profile/ProfileForm';
 import { getAvatarUrl, getMyProfile } from '@/lib/db/profile';
@@ -58,6 +59,21 @@ export default async function ConfiguracoesPage() {
             Troque a senha sempre que sentir necessidade.
           </p>
           <PasswordForm />
+        </section>
+
+        {/* ---------- Tema (paleta de cores) ---------- */}
+        <section
+          aria-labelledby="tema-heading"
+          className="border-outline-variant/40 mb-16 border-t pt-12"
+        >
+          <h2 id="tema-heading" className="text-on-surface mb-2 text-2xl tracking-tight">
+            Tema
+          </h2>
+          <p className="text-on-surface-variant font-sans mb-8 text-sm italic">
+            A paleta inteira do santuário muda — fundos, textos, fitas, sombras. Escolha a que
+            combina com o que você vai escrever hoje.
+          </p>
+          <ThemePicker />
         </section>
 
         {/* ---------- Tipografia ---------- */}
