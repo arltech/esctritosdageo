@@ -15,6 +15,51 @@ const MAX_BIO = 500;
 
 export type UpdateProfileResult = { ok: true } | { ok: false; error: string };
 
+export type UpdatePasswordResult = { ok: true } | { ok: false; error: string };
+
+const PASSWORD_MIN = 6;
+const PASSWORD_MAX = 200;
+
+/**
+ * Troca a senha do usuário autenticado. Não exige senha atual — sessão já
+ * autentica. Em fluxos críticos (banco etc.) reauth seria boa prática, mas
+ * pra MVP de escrita pessoal isso é proporcional.
+ */
+export async function updatePassword(
+  _prev: UpdatePasswordResult | null,
+  formData: FormData,
+): Promise<UpdatePasswordResult> {
+  const next = formData.get('next_password');
+  const confirm = formData.get('confirm_password');
+
+  if (typeof next !== 'string' || typeof confirm !== 'string') {
+    return { ok: false, error: 'Preencha os dois campos.' };
+  }
+  if (next.length < PASSWORD_MIN || next.length > PASSWORD_MAX) {
+    return {
+      ok: false,
+      error: `Senha precisa ter entre ${PASSWORD_MIN} e ${PASSWORD_MAX} caracteres.`,
+    };
+  }
+  if (next !== confirm) {
+    return { ok: false, error: 'As senhas não batem.' };
+  }
+
+  const supabase = await createServerSupabaseClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { ok: false, error: 'Sessão expirada. Entre novamente.' };
+
+  const { error } = await supabase.auth.updateUser({ password: next });
+  if (error) {
+    console.error('[updatePassword] falhou', error.message);
+    return { ok: false, error: 'Não consegui trocar a senha. Tente de novo.' };
+  }
+
+  return { ok: true };
+}
+
 function extFromMime(mime: string): string {
   if (mime === 'image/png') return 'png';
   if (mime === 'image/webp') return 'webp';

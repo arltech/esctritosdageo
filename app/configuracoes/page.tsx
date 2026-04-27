@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 
 import { Container } from '@/components/layout/Container';
 import { FontPicker } from '@/components/preferences/FontPicker';
+import { PasswordForm } from '@/components/profile/PasswordForm';
 import { ProfileForm } from '@/components/profile/ProfileForm';
 import { getAvatarUrl, getMyProfile } from '@/lib/db/profile';
 
@@ -43,6 +44,20 @@ export default async function ConfiguracoesPage() {
             Como você quer aparecer pra quem visita o santuário.
           </p>
           <ProfileForm profile={profile} avatarUrl={avatarUrl} />
+        </section>
+
+        {/* ---------- Senha ---------- */}
+        <section
+          aria-labelledby="senha-heading"
+          className="border-outline-variant/40 mb-16 border-t pt-12"
+        >
+          <h2 id="senha-heading" className="text-on-surface mb-2 text-2xl tracking-tight">
+            Segurança
+          </h2>
+          <p className="text-on-surface-variant font-sans mb-8 text-sm italic">
+            Troque a senha sempre que sentir necessidade.
+          </p>
+          <PasswordForm />
         </section>
 
         {/* ---------- Tipografia ---------- */}
