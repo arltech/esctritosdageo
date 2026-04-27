@@ -207,7 +207,7 @@ export default async function LandingPage() {
           <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10">
             <Link
               href="/leituras"
-              className="bg-primary text-on-primary hover:bg-primary-container font-sans inline-block rounded-full px-8 py-3 text-sm tracking-widest uppercase no-underline shadow-sm transition-colors"
+              className="border-outline-variant bg-surface-container-lowest text-on-surface hover:border-on-surface hover:bg-surface-container font-sans inline-block rounded-full border px-8 py-3 text-sm tracking-widest uppercase no-underline shadow-sm transition-colors"
             >
               ler escritas
             </Link>
