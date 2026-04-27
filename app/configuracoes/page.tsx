@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 
 import { Container } from '@/components/layout/Container';
 import { FontPicker } from '@/components/preferences/FontPicker';
+import { SettingsTabs } from '@/components/preferences/SettingsTabs';
 import { ThemePicker } from '@/components/preferences/ThemePicker';
 import { PasswordForm } from '@/components/profile/PasswordForm';
 import { ProfileForm } from '@/components/profile/ProfileForm';
@@ -23,73 +24,34 @@ export default async function ConfiguracoesPage() {
     profile.updated_at ? new Date(profile.updated_at).getTime().toString() : undefined,
   );
 
-  return (
-    <main className="px-4 py-12 sm:px-8">
-      <Container as="article">
-        <header className="mb-12 flex items-baseline justify-between">
-          <h1 className="text-on-surface text-4xl tracking-tight">Configurações</h1>
-          <Link
-            href="/casa"
-            className="text-on-surface-variant hover:text-primary font-sans text-sm tracking-wider uppercase no-underline transition-colors"
-          >
-            voltar
-          </Link>
-        </header>
-
-        {/* ---------- Perfil ---------- */}
-        <section aria-labelledby="perfil-heading" className="mb-16">
-          <h2 id="perfil-heading" className="text-on-surface mb-2 text-2xl tracking-tight">
-            Perfil
-          </h2>
-          <p className="text-on-surface-variant font-sans mb-8 text-sm italic">
-            Como você quer aparecer pra quem visita o santuário.
-          </p>
-          <ProfileForm profile={profile} avatarUrl={avatarUrl} />
-        </section>
-
-        {/* ---------- Senha ---------- */}
-        <section
-          aria-labelledby="senha-heading"
-          className="border-outline-variant/40 mb-16 border-t pt-12"
-        >
-          <h2 id="senha-heading" className="text-on-surface mb-2 text-2xl tracking-tight">
-            Segurança
-          </h2>
-          <p className="text-on-surface-variant font-sans mb-8 text-sm italic">
-            Troque a senha sempre que sentir necessidade.
-          </p>
-          <PasswordForm />
-        </section>
-
-        {/* ---------- Tema (paleta de cores) ---------- */}
-        <section
-          aria-labelledby="tema-heading"
-          className="border-outline-variant/40 mb-16 border-t pt-12"
-        >
-          <h2 id="tema-heading" className="text-on-surface mb-2 text-2xl tracking-tight">
-            Tema
-          </h2>
-          <p className="text-on-surface-variant font-sans mb-8 text-sm italic">
-            A paleta inteira do santuário muda — fundos, textos, fitas, sombras. Escolha a que
-            combina com o que você vai escrever hoje.
-          </p>
-          <ThemePicker />
-        </section>
-
-        {/* ---------- Tipografia ---------- */}
-        <section
-          aria-labelledby="tipografia-heading"
-          className="border-outline-variant/40 border-t pt-12"
-        >
-          <h2 id="tipografia-heading" className="text-on-surface mb-2 text-2xl tracking-tight">
-            Tipografia
-          </h2>
-          <p className="text-on-surface-variant font-sans mb-8 text-sm italic">
-            Escolha duas fontes — uma pra ler, outra pra escrever — e elas se aplicam em todo o
-            santuário.
-          </p>
-
-          <div className="mb-10">
+  const tabs = [
+    {
+      id: 'perfil',
+      label: 'Perfil',
+      description: 'Como você quer aparecer pra quem visita o santuário.',
+      content: <ProfileForm profile={profile} avatarUrl={avatarUrl} />,
+    },
+    {
+      id: 'seguranca',
+      label: 'Segurança',
+      description: 'Troque a senha sempre que sentir necessidade.',
+      content: <PasswordForm />,
+    },
+    {
+      id: 'tema',
+      label: 'Tema',
+      description:
+        'A paleta inteira do santuário muda — fundos, textos, fitas, sombras. Escolha a que combina com o que você vai escrever hoje.',
+      content: <ThemePicker />,
+    },
+    {
+      id: 'tipografia',
+      label: 'Tipografia',
+      description:
+        'Escolha duas fontes — uma pra ler, outra pra escrever — e elas se aplicam em todo o santuário.',
+      content: (
+        <div className="flex flex-col gap-10">
+          <div>
             <h3 className="text-on-surface-variant font-sans mb-3 text-xs tracking-widest uppercase">
               Fonte de leitura
             </h3>
@@ -108,7 +70,25 @@ export default async function ConfiguracoesPage() {
             </p>
             <FontPicker kind="writing" />
           </div>
-        </section>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <main className="px-4 py-12 sm:px-8">
+      <Container as="article">
+        <header className="mb-10 flex items-baseline justify-between">
+          <h1 className="text-on-surface text-3xl tracking-tight sm:text-4xl">Configurações</h1>
+          <Link
+            href="/casa"
+            className="text-on-surface-variant hover:text-primary font-sans text-sm tracking-wider uppercase no-underline transition-colors"
+          >
+            voltar
+          </Link>
+        </header>
+
+        <SettingsTabs tabs={tabs} defaultTab="perfil" />
       </Container>
     </main>
   );
