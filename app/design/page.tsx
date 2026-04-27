@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+// SettingsTabs usa useSearchParams() — força render dinâmico pra evitar
+// "useSearchParams should be wrapped in suspense" durante prerender.
+export const dynamic = 'force-dynamic';
+
 /* ============================================================================
  * Aba 1: CORES & TEMAS
  * ============================================================================ */
