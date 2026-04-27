@@ -16,6 +16,8 @@ import { Container } from '@/components/layout/Container';
 import { SettingsTabs } from '@/components/preferences/SettingsTabs';
 import { ShowcaseSection, SpecCard, Swatch } from '@/components/design/ShowcaseSection';
 
+import { ElementsTab, FeedbackTab, FormsTab, NavigationTab } from './extras';
+
 export const metadata: Metadata = {
   title: 'Design System — Escritos da Geo',
   robots: { index: false, follow: false },
@@ -528,7 +530,11 @@ export default async function DesignPage() {
     { id: 'texturas', label: 'Texturas', content: <TexturesTab /> },
     { id: 'sombras', label: 'Sombras', content: <ShadowsTab /> },
     { id: 'botoes', label: 'Botões & Inputs', content: <ButtonsTab /> },
+    { id: 'forms', label: 'Forms', content: <FormsTab /> },
+    { id: 'navegacao', label: 'Navegação', content: <NavigationTab /> },
     { id: 'componentes', label: 'Componentes', content: <ComponentsTab /> },
+    { id: 'elementos', label: 'Elementos', content: <ElementsTab /> },
+    { id: 'feedback', label: 'Feedback', content: <FeedbackTab /> },
   ];
 
   return (
