@@ -86,6 +86,8 @@ export async function saveText(
     return { ok: false, error: 'Não consegui processar o conteúdo. Tente de novo.' };
   }
 
+  let savedId: string;
+
   if (id) {
     const { error } = await supabase
       .from('texts')
@@ -96,33 +98,32 @@ export async function saveText(
       console.error('[saveText] update falhou', error);
       return { ok: false, error: 'Não consegui salvar a edição.' };
     }
-    revalidatePath('/casa');
-    revalidatePath('/escritas');
-    revalidatePath(`/escritas/${id}`);
-    return { ok: true, id };
-  }
+    savedId = id;
+  } else {
+    const { data, error } = await supabase
+      .from('texts')
+      .insert({
+        user_id: user.id,
+        title,
+        body_html: bodyHtml,
+        body_markdown: '',
+        status: 'private',
+        tags,
+      })
+      .select('id')
+      .single();
 
-  const { data, error } = await supabase
-    .from('texts')
-    .insert({
-      user_id: user.id,
-      title,
-      body_html: bodyHtml,
-      body_markdown: '',
-      status: 'private',
-      tags,
-    })
-    .select('id')
-    .single();
-
-  if (error || !data) {
-    console.error('[saveText] insert falhou', error);
-    return { ok: false, error: 'Não consegui salvar. Tente de novo em instantes.' };
+    if (error || !data) {
+      console.error('[saveText] insert falhou', error);
+      return { ok: false, error: 'Não consegui salvar. Tente de novo em instantes.' };
+    }
+    savedId = data.id;
   }
 
   revalidatePath('/casa');
   revalidatePath('/escritas');
-  return { ok: true, id: data.id };
+  revalidatePath(`/escritas/${savedId}`);
+  redirect(`/escritas/${savedId}`);
 }
 
 /**
