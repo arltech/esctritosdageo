@@ -46,7 +46,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 5. **RLS sempre ativo** — toda tabela tem RLS habilitado com policies "deny by default".
 6. **Sanitização HTML server-side** — `body_html` passa por `rehype-sanitize` antes de persistir.
 7. **Sem console.log em produção** — use `console.error` (capturado por Sentry); remova `console.log` antes de commit.
-8. **Anti-métricas** — não otimizar/exibir: tempo no app, curtidas como número, contadores vaidosos, viralização. Ver `prd.md` Seção 5.
+8. **Anti-métricas** — não otimizar/exibir: tempo no app, curtidas como número, contadores vaidosos, viralização. **Reactions e bilhetes em textos públicos foram adotados (abr/2026) como exceção**: reactions são emoji-state SEM contagem; bilhetes são privados (só a autora vê em `/recados`, sem badge de não-lido). Continua proibido: contagens visíveis, streaks, "X pessoas curtiram", feeds públicos de comentários. Ver `prd.md` Seção 5 e `DESIGN.md` §10.
 9. **Migrations versionadas** — `supabase/migrations/NNNN_descricao.sql`, nunca alterar schema fora desse fluxo.
 10. **Service role key server-only** — apenas em `lib/supabase/admin.ts`, nunca exposta ao client.
 

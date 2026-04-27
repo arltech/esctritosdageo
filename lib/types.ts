@@ -19,6 +19,9 @@ export type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
 export type TextInsert = Database['public']['Tables']['texts']['Insert'];
 export type TextUpdate = Database['public']['Tables']['texts']['Update'];
 export type WallItemInsert = Database['public']['Tables']['wall_items']['Insert'];
+export type TextReaction = Database['public']['Tables']['text_reactions']['Row'];
+export type TextMessage = Database['public']['Tables']['text_messages']['Row'];
+export type TextMessageInsert = Database['public']['Tables']['text_messages']['Insert'];
 
 // Tipo de domínio: WallItem com URL assinada para exibição
 export interface WallItemWithUrl extends WallItem {
@@ -28,6 +31,7 @@ export interface WallItemWithUrl extends WallItem {
 // Enums de status
 export type TextStatus = Database['public']['Enums']['text_status'];
 export type WallItemStatus = Database['public']['Enums']['wall_item_status'];
+export type ReactionKind = Database['public']['Enums']['reaction_kind'];
 
 // Tipos de domínio derivados (usados em UI / Server Actions)
 export interface TextListItem {
@@ -40,6 +44,7 @@ export interface TextListItem {
 }
 
 export interface PublicText {
+  id: string;
   slug: string;
   title: string;
   body_html: string;

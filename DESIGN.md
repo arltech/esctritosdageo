@@ -303,14 +303,14 @@ Sempre que escrever animação custom, declare também o fallback `prefers-reduc
 
 Coisas que **não** existem no produto, mesmo que UX moderna sugira:
 
-- ❌ **Modo escuro** — paleta é warm/luz, escolha de identidade
-- ❌ **Métricas de engajamento visíveis** — sem contadores, streaks, "dias seguidos"
-- ❌ **Notificações in-app** — sem badges vermelhos, sem contadores não lidos
+- ❌ **Modo escuro** — paleta é warm/luz, escolha de identidade. **Atualização (abr/2026):** múltiplas paletas warm foram adotadas (Sépia, Areia, Sálvia, Lavanda) — todas claras, configuráveis em `/configuracoes`. Não é dark mode, é variação de identidade.
+- ❌ **Métricas de engajamento visíveis** — sem contadores, streaks, "dias seguidos". **Continua válido:** reactions existem mas SEM contagem visível, e bilhetes não têm badge "X não lidos".
+- ❌ **Notificações in-app** — sem badges vermelhos, sem contadores não lidos. Bilhetes ficam acessíveis via `/recados` mas sem aviso visual de quantidade.
 - ❌ **Skeleton loaders animados** — usar fallback estático ou nada
 - ❌ **Tooltips agressivos** — só nativo via `title`, sem libraries de tooltip
 - ❌ **Scroll restoration custom** — comportamento nativo basta
 - ❌ **Avatares de seguidores / sociais** — produto é de uma só pessoa
-- ❌ **Estados de "típico" de Twitter/Instagram** (curtir, repostar, salvar) — nada disso
+- ⚠️ **Reactions/bilhetes em textos públicos** (adotado abr/2026 com fricção) — NÃO é "rede social leve". Reactions são **5 emoji-state sem contagem**; bilhetes são **privados, só a autora vê**. Sem feed público de comentários, sem repost, sem perfil de leitor.
 
 ---
 

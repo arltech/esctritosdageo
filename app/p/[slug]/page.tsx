@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
 import { Container } from '@/components/layout/Container';
+import { MessageForm } from '@/components/social/MessageForm';
+import { ReactionBar } from '@/components/social/ReactionBar';
+import { getMyReaction } from '@/lib/db/social';
 import { getPublicTextBySlug } from '@/lib/db/texts';
 
 interface PageProps {
@@ -78,6 +81,14 @@ export default async function PublicTextPage({ params }: PageProps) {
             }}
             dangerouslySetInnerHTML={{ __html: text.body_html }}
           />
+
+          {/* ---------- Bloco social: reactions + bilhete ---------- */}
+          <footer className="border-outline-variant/40 mx-auto mt-16 max-w-[640px] border-t pt-10">
+            <div className="mb-10">
+              <ReactionBar textId={text.id} initialReaction={await getMyReaction(text.id)} />
+            </div>
+            <MessageForm textId={text.id} authorName={text.display_name} />
+          </footer>
         </article>
       </Container>
     </main>

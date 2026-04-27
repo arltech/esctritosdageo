@@ -74,7 +74,7 @@ export async function getPublicTextBySlug(slug: string): Promise<PublicText | nu
 
   const { data: text, error: textErr } = await admin
     .from('texts')
-    .select('slug, title, body_html, published_at, user_id')
+    .select('id, slug, title, body_html, published_at, user_id')
     .eq('slug', slug)
     .eq('status', 'public')
     .maybeSingle();
@@ -91,6 +91,7 @@ export async function getPublicTextBySlug(slug: string): Promise<PublicText | nu
     .maybeSingle<Profile>();
 
   return {
+    id: text.id,
     slug: text.slug ?? '',
     title: text.title,
     body_html: text.body_html,

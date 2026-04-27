@@ -103,6 +103,54 @@ export type Database = {
         };
         Relationships: [];
       };
+      text_reactions: {
+        Row: {
+          anon_id: string;
+          created_at: string;
+          kind: Database['public']['Enums']['reaction_kind'];
+          text_id: string;
+        };
+        Insert: {
+          anon_id: string;
+          created_at?: string;
+          kind: Database['public']['Enums']['reaction_kind'];
+          text_id: string;
+        };
+        Update: {
+          anon_id?: string;
+          created_at?: string;
+          kind?: Database['public']['Enums']['reaction_kind'];
+          text_id?: string;
+        };
+        Relationships: [];
+      };
+      text_messages: {
+        Row: {
+          body: string;
+          created_at: string;
+          id: string;
+          read_at: string | null;
+          sender_name: string | null;
+          text_id: string;
+        };
+        Insert: {
+          body: string;
+          created_at?: string;
+          id?: string;
+          read_at?: string | null;
+          sender_name?: string | null;
+          text_id: string;
+        };
+        Update: {
+          body?: string;
+          created_at?: string;
+          id?: string;
+          read_at?: string | null;
+          sender_name?: string | null;
+          text_id?: string;
+        };
+        Relationships: [];
+      };
       wall_items: {
         Row: {
           caption: string | null;
@@ -147,6 +195,7 @@ export type Database = {
       [_ in never]: never;
     };
     Enums: {
+      reaction_kind: 'coracao' | 'lagrima' | 'brilho' | 'maos' | 'sorriso';
       text_status: 'private' | 'public';
       wall_item_status: 'private' | 'public';
     };
@@ -277,6 +326,7 @@ export const Constants = {
   },
   public: {
     Enums: {
+      reaction_kind: ['coracao', 'lagrima', 'brilho', 'maos', 'sorriso'],
       text_status: ['private', 'public'],
       wall_item_status: ['private', 'public'],
     },
