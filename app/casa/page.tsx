@@ -1,4 +1,4 @@
-import { BookOpen, Home, Mail, NotebookPen, Settings, User } from 'lucide-react';
+import { BookOpen, Home, Mail, NotebookPen, Palette, Settings, User } from 'lucide-react';
 import Link from 'next/link';
 
 import { MarginaliaCard } from '@/components/casa/MarginaliaCard';
@@ -80,6 +80,14 @@ export default async function CasaPage({ searchParams }: CasaPageProps) {
                 className="text-on-surface-variant hover:text-on-surface flex h-8 w-8 items-center justify-center no-underline transition-colors"
               >
                 <Mail size={18} strokeWidth={1.6} />
+              </Link>
+              <Link
+                href="/design"
+                aria-label="Sistema de Design"
+                title="Sistema de Design"
+                className="text-on-surface-variant hover:text-on-surface flex h-8 w-8 items-center justify-center no-underline transition-colors"
+              >
+                <Palette size={18} strokeWidth={1.6} />
               </Link>
             </div>
 
