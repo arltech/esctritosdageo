@@ -30,24 +30,33 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
+          avatar_path: string | null;
           bio: string | null;
           created_at: string;
           display_name: string;
           id: string;
+          location: string | null;
+          tagline: string | null;
           updated_at: string;
         };
         Insert: {
+          avatar_path?: string | null;
           bio?: string | null;
           created_at?: string;
           display_name?: string;
           id: string;
+          location?: string | null;
+          tagline?: string | null;
           updated_at?: string;
         };
         Update: {
+          avatar_path?: string | null;
           bio?: string | null;
           created_at?: string;
           display_name?: string;
           id?: string;
+          location?: string | null;
+          tagline?: string | null;
           updated_at?: string;
         };
         Relationships: [];
@@ -61,6 +70,7 @@ export type Database = {
           published_at: string | null;
           slug: string | null;
           status: Database['public']['Enums']['text_status'];
+          tags: string[];
           title: string;
           updated_at: string;
           user_id: string;
@@ -73,6 +83,7 @@ export type Database = {
           published_at?: string | null;
           slug?: string | null;
           status?: Database['public']['Enums']['text_status'];
+          tags?: string[];
           title?: string;
           updated_at?: string;
           user_id: string;
@@ -85,8 +96,45 @@ export type Database = {
           published_at?: string | null;
           slug?: string | null;
           status?: Database['public']['Enums']['text_status'];
+          tags?: string[];
           title?: string;
           updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [];
+      };
+      wall_items: {
+        Row: {
+          caption: string | null;
+          created_at: string;
+          id: string;
+          image_path: string;
+          on_home: boolean;
+          published_at: string | null;
+          status: Database['public']['Enums']['wall_item_status'];
+          tilt_deg: number;
+          user_id: string;
+        };
+        Insert: {
+          caption?: string | null;
+          created_at?: string;
+          id?: string;
+          image_path: string;
+          on_home?: boolean;
+          published_at?: string | null;
+          status?: Database['public']['Enums']['wall_item_status'];
+          tilt_deg?: number;
+          user_id: string;
+        };
+        Update: {
+          caption?: string | null;
+          created_at?: string;
+          id?: string;
+          image_path?: string;
+          on_home?: boolean;
+          published_at?: string | null;
+          status?: Database['public']['Enums']['wall_item_status'];
+          tilt_deg?: number;
           user_id?: string;
         };
         Relationships: [];
@@ -100,6 +148,7 @@ export type Database = {
     };
     Enums: {
       text_status: 'private' | 'public';
+      wall_item_status: 'private' | 'public';
     };
     CompositeTypes: {
       [_ in never]: never;
@@ -229,6 +278,7 @@ export const Constants = {
   public: {
     Enums: {
       text_status: ['private', 'public'],
+      wall_item_status: ['private', 'public'],
     },
   },
 } as const;

@@ -2,45 +2,126 @@
 
 /*
  * ============================================================================
- * Escritos da Geo — Design Tokens
+ * Escritos da Geo — Design System "Ephemeral Archive"
  * ============================================================================
- * Paleta neutra-quente: papel, ink, sépia. Decisão MVP: SEM dark mode.
- * O ato de escrever íntimo é diurno por default; dark mode chega na Fase 2
- * com curadoria estética separada. Por isso, ignoramos prefers-color-scheme.
+ * Aesthetic: tactile / skeuomorphic. Digital stationery, visual journal.
+ * Paleta: warm earthy neutrals (paper, ink, sage, washi-tan).
+ * Tipografia: Newsreader (editorial) + Epilogue (marginalia).
+ * Sem dark mode no MVP.
  * ============================================================================
  */
 
-:root {
-  /* Paleta */
-  --color-paper: #faf7f2;
-  --color-ink: #1a1a1a;
-  --color-ink-muted: #5c5c5c;
-  --color-accent: #8b5a3c; /* sépia discreto — links e seleções */
-  --color-accent-soft: #c2a07a; /* sépia mais leve para hover/borders */
+@theme {
+  /* ---------------------------------------------------------------- Surfaces */
+  --color-background: #fff8f0;
+  --color-surface: #fff8f0;
+  --color-surface-bright: #fff8f0;
+  --color-surface-dim: #e2d9c8;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #fcf3e1;
+  --color-surface-container: #f6eddb;
+  --color-surface-container-high: #f0e7d5;
+  --color-surface-container-highest: #eae2d0;
+  --color-surface-variant: #eae2d0;
+  --color-surface-tint: #6b5c4d;
+  --color-inverse-surface: #343024;
+  --color-inverse-on-surface: #f9f0de;
 
-  /* Tipografia */
-  --line-height-prose: 1.7;
+  /* --------------------------------------------------------------- On-Surfaces */
+  --color-on-background: #1f1b10;
+  --color-on-surface: #1f1b10;
+  --color-on-surface-variant: #4d453e;
+
+  /* ----------------------------------------------------- Primary (Sepia Ink) */
+  --color-primary: #68594b;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #827262;
+  --color-on-primary-container: #fffbff;
+  --color-primary-fixed: #f4dfcc;
+  --color-primary-fixed-dim: #d7c3b1;
+  --color-on-primary-fixed: #24190e;
+  --color-on-primary-fixed-variant: #524436;
+  --color-inverse-primary: #d7c3b1;
+
+  /* --------------------------------------------------- Secondary (Muted Sage) */
+  --color-secondary: #59614e;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #dee6ce;
+  --color-on-secondary-container: #5f6754;
+  --color-secondary-fixed: #dee6ce;
+  --color-secondary-fixed-dim: #c2cab3;
+  --color-on-secondary-fixed: #171e0f;
+  --color-on-secondary-fixed-variant: #424938;
+
+  /* --------------------------------------------- Tertiary (Washi / Dusty Tan) */
+  --color-tertiary: #7b542b;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #966c41;
+  --color-on-tertiary-container: #fffbff;
+  --color-tertiary-fixed: #ffdcbd;
+  --color-tertiary-fixed-dim: #f0bd8b;
+  --color-on-tertiary-fixed: #2c1600;
+  --color-on-tertiary-fixed-variant: #623f18;
+
+  /* --------------------------------------------------------------- Outlines */
+  --color-outline: #7f756d;
+  --color-outline-variant: #d0c4bb;
+
+  /* ------------------------------------------------------------------ Error */
+  --color-error: #ba1a1a;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffdad6;
+  --color-on-error-container: #93000a;
+
+  /* ----------------------------------------------------------- Typography */
+  /* Fonte de leitura (UI/títulos/parágrafos editoriais) */
+  --font-serif:
+    var(--font-newsreader), 'Iowan Old Style', 'Charter', Georgia, 'Times New Roman', serif;
+  /* Fonte de escrita (legendas, papel pautado, manuscrito) */
+  --font-writing: var(--font-caveat), 'Bradley Hand', 'Comic Sans MS', cursive;
+  --font-sans: var(--font-epilogue), -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Text scale (Ephemeral Archive type system) */
+  --text-headline-lg: 48px;
+  --text-headline-lg--line-height: 1.1;
+  --text-headline-lg--font-weight: 600;
+
+  --text-headline-md: 32px;
+  --text-headline-md--line-height: 1.2;
+  --text-headline-md--font-weight: 500;
+
+  --text-body-md: 18px;
+  --text-body-md--line-height: 1.6;
+  --text-body-md--font-weight: 400;
+
+  --text-marginalia: 16px;
+  --text-marginalia--line-height: 1.4;
+  --text-marginalia--letter-spacing: 0.02em;
+  --text-marginalia--font-weight: 400;
+
+  --text-caption-hand: 14px;
+  --text-caption-hand--line-height: 1.3;
+  --text-caption-hand--font-weight: 300;
+
+  /* Organic spacing */
+  --spacing-margin-page: 2.5rem;
+  --spacing-gutter-organic: 1.5rem;
+  --spacing-overlap-negative: -1.25rem;
 
   /* Reading width — ~65 caracteres */
   --reading-max-width: 680px;
 }
 
-@theme inline {
-  --color-paper: var(--color-paper);
-  --color-ink: var(--color-ink);
-  --color-ink-muted: var(--color-ink-muted);
-  --color-accent: var(--color-accent);
-  --color-accent-soft: var(--color-accent-soft);
-  --font-serif: var(--font-serif), 'Iowan Old Style', 'Charter', Georgia, 'Times New Roman', serif;
-}
-
 /* ----------------------------------------------------------------------------
- * Tipografia base — hierarquia mínima e elegante.
+ * Base typography — editorial primeiro, marginalia em tensão.
  * ---------------------------------------------------------------------------- */
 
 body {
+  background: var(--color-background);
+  color: var(--color-on-background);
   font-family: var(--font-serif);
-  line-height: var(--line-height-prose);
+  font-size: 18px;
+  line-height: 1.6;
   font-feature-settings:
     'kern' 1,
     'liga' 1,
@@ -55,54 +136,270 @@ h2,
 h3,
 h4 {
   font-family: var(--font-serif);
-  color: var(--color-ink);
-  line-height: 1.2;
+  color: var(--color-on-surface);
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
 
 h1 {
   font-size: clamp(2.25rem, 5vw, 3rem);
-  font-weight: 500;
+  font-weight: 600;
+  line-height: 1.1;
 }
 
 h2 {
-  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-size: clamp(1.75rem, 4vw, 2rem);
   font-weight: 500;
+  line-height: 1.2;
 }
 
 h3 {
   font-size: 1.5rem;
   font-weight: 500;
+  line-height: 1.25;
 }
 
 h4 {
   font-size: 1.25rem;
   font-weight: 500;
+  line-height: 1.3;
 }
 
 p {
-  font-size: 1.125rem;
-  color: var(--color-ink);
   text-wrap: pretty;
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--color-tertiary);
   text-underline-offset: 0.2em;
   text-decoration-thickness: 1px;
   transition: color 200ms ease;
 }
 
 a:hover {
-  color: var(--color-ink);
+  color: var(--color-on-surface);
 }
 
 blockquote {
-  border-left: 2px solid var(--color-accent-soft);
+  border-left: 2px solid var(--color-tertiary-fixed-dim);
   padding-left: 1.25rem;
   font-style: italic;
-  color: var(--color-ink-muted);
+  color: var(--color-on-surface-variant);
+}
+
+/* ----------------------------------------------------------------------------
+ * Tactile utilities — paper grain, washi tape, deckle edges, soft shadows.
+ * ---------------------------------------------------------------------------- */
+
+@utility paper-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+}
+
+@utility washi-tape-primary {
+  background: linear-gradient(135deg, rgba(215, 195, 177, 0.7) 0%, rgba(215, 195, 177, 0.4) 100%);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(2px);
+}
+
+@utility washi-tape-sage {
+  background: linear-gradient(135deg, rgba(222, 230, 206, 0.7) 0%, rgba(222, 230, 206, 0.4) 100%);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(2px);
+}
+
+@utility shadow-tactile {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    4px 4px 10px rgba(0, 0, 0, 0.08),
+    8px 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+@utility shadow-polaroid {
+  box-shadow:
+    0 2px 3px rgba(0, 0, 0, 0.08),
+    3px 6px 12px rgba(0, 0, 0, 0.12),
+    8px 14px 28px rgba(0, 0, 0, 0.08);
+}
+
+@utility deckle-edge {
+  clip-path: polygon(
+    0% 2%,
+    3% 0%,
+    8% 1%,
+    14% 0%,
+    20% 1%,
+    27% 0%,
+    34% 1%,
+    42% 0%,
+    50% 1%,
+    58% 0%,
+    66% 1%,
+    74% 0%,
+    81% 1%,
+    87% 0%,
+    93% 1%,
+    97% 0%,
+    100% 3%,
+    99% 12%,
+    100% 25%,
+    99% 40%,
+    100% 55%,
+    99% 70%,
+    100% 85%,
+    99% 95%,
+    97% 100%,
+    93% 99%,
+    87% 100%,
+    81% 99%,
+    74% 100%,
+    66% 99%,
+    58% 100%,
+    50% 99%,
+    42% 100%,
+    34% 99%,
+    27% 100%,
+    20% 99%,
+    14% 100%,
+    8% 99%,
+    3% 100%,
+    0% 97%,
+    1% 85%,
+    0% 70%,
+    1% 55%,
+    0% 40%,
+    1% 25%,
+    0% 12%
+  );
+}
+
+@utility photo-tone {
+  filter: grayscale(8%) sepia(8%) contrast(1.05) saturate(0.95);
+}
+
+@utility wall-surface {
+  background-color: #ede2ce;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      rgba(122, 95, 70, 0.03) 0,
+      rgba(122, 95, 70, 0.03) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(122, 95, 70, 0.025) 0,
+      rgba(122, 95, 70, 0.025) 1px,
+      transparent 1px,
+      transparent 4px
+    ),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+}
+
+@utility shadow-pressed {
+  box-shadow:
+    inset 1px 1px 3px rgba(0, 0, 0, 0.1),
+    inset -1px -1px 3px rgba(255, 255, 255, 0.5);
+}
+
+/* Editor: placeholder do contentEditable + estilo do marca-texto */
+[contenteditable][data-placeholder]:empty::before {
+  content: attr(data-placeholder);
+  color: rgba(77, 69, 62, 0.35);
+  pointer-events: none;
+}
+
+/* Sem borda no foco — papel não tem moldura.
+ * Aplica também aos inputs do editor (título, tag) que vivem na mesma página.
+ */
+[contenteditable]:focus,
+[contenteditable]:focus-visible,
+.editor-input:focus,
+.editor-input:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.prose-editor mark,
+[contenteditable] mark {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    transparent 12%,
+    rgba(247, 218, 130, 0.6) 12%,
+    rgba(247, 218, 130, 0.6) 88%,
+    transparent 88%
+  );
+  color: inherit;
+  padding: 0 2px;
+}
+
+.prose-editor img,
+[contenteditable] img {
+  border-radius: 2px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    2px 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+[contenteditable] img {
+  cursor: pointer;
+  transition: outline 120ms ease;
+}
+
+[contenteditable] img.is-selected {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 4px;
+}
+
+/* Imagens com alinhamento — texto flui ao lado */
+.prose-editor img[data-align='left'],
+[contenteditable] img[data-align='left'] {
+  float: left;
+  margin: 0.25rem 1.25rem 0.5rem 0;
+  max-width: 50%;
+}
+
+.prose-editor img[data-align='right'],
+[contenteditable] img[data-align='right'] {
+  float: right;
+  margin: 0.25rem 0 0.5rem 1.25rem;
+  max-width: 50%;
+}
+
+.prose-editor img[data-align='center'],
+[contenteditable] img[data-align='center'] {
+  display: block;
+  float: none;
+  margin: 1rem auto;
+  max-width: 100%;
+}
+
+/* Parágrafo wrapper de imagem inline não cria break */
+.prose-editor p:has(> img[data-align='left']),
+.prose-editor p:has(> img[data-align='right']),
+[contenteditable] p:has(> img[data-align='left']),
+[contenteditable] p:has(> img[data-align='right']) {
+  display: inline;
+  margin: 0;
+}
+
+/* Parágrafos do leitor com respiro */
+.prose-editor p {
+  margin-bottom: 1rem;
+}
+.prose-editor p:last-child {
+  margin-bottom: 0;
+}
+
+@utility notebook-paper {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 39px,
+    rgba(208, 196, 187, 0.55) 39px,
+    rgba(208, 196, 187, 0.55) 40px
+  );
 }
 
 /* ----------------------------------------------------------------------------
@@ -121,12 +418,12 @@ blockquote {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: 2px;
 }
 
 ::selection {
-  background: var(--color-accent-soft);
-  color: var(--color-ink);
+  background: var(--color-primary-fixed);
+  color: var(--color-on-primary-fixed);
 }

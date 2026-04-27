@@ -67,3 +67,9 @@ logs
 # Local AI/Agent state
 .aiox/
 .claude/local/
+
+# Design references (locais, não vão pro repo)
+/public/Geo Design System/
+/public/ephemeral-archive/
+/public/ephemeral-archive.zip
+/public/design_system/
