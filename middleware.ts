@@ -11,7 +11,7 @@ import type { Database } from '@/lib/supabase/database.types';
  * 3. Redireciona usuários autenticados que tentam acessar /entrar para a casa (/).
  */
 
-const PUBLIC_PATHS = new Set<string>(['/', '/entrar']);
+const PUBLIC_PATHS = new Set<string>(['/', '/entrar', '/leituras']);
 const PUBLIC_PREFIXES = ['/api/health', '/p/'];
 
 function isPublicPath(pathname: string): boolean {

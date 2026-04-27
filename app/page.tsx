@@ -204,10 +204,16 @@ export default async function LandingPage() {
             privado por padrão · público por escolha
           </p>
 
-          <div className="mt-8 sm:mt-10">
+          <div className="mt-8 flex flex-col items-center gap-4 sm:mt-10">
+            <Link
+              href="/leituras"
+              className="bg-primary text-on-primary hover:bg-primary-container font-sans inline-block rounded-full px-8 py-3 text-sm tracking-widest uppercase no-underline shadow-sm transition-colors"
+            >
+              ler escritas
+            </Link>
             <Link
               href="/entrar"
-              className="border-outline-variant bg-surface-container-lowest text-on-surface hover:border-primary hover:text-primary font-sans inline-block rounded-sm border px-7 py-2.5 text-sm tracking-widest uppercase no-underline shadow-sm transition-colors sm:px-8 sm:py-3"
+              className="text-on-surface-variant hover:text-on-surface font-sans text-xs tracking-wider uppercase no-underline transition-colors"
             >
               entrar
             </Link>

@@ -63,6 +63,56 @@ export async function getMyText(id: string): Promise<Text | null> {
   return data;
 }
 
+export interface PublicTextListItem {
+  slug: string;
+  title: string;
+  first_sentence: string;
+  tags: string[];
+  published_at: string;
+  display_name: string;
+}
+
+/**
+ * Lista todas as escritas públicas pra index (estilo blog).
+ * Anon-safe via admin client. Mais recentes primeiro.
+ */
+export async function listPublicTexts(limit = 50): Promise<PublicTextListItem[]> {
+  const admin = getSupabaseAdmin();
+
+  const { data: texts, error } = await admin
+    .from('texts')
+    .select('slug, title, body_html, tags, published_at, user_id')
+    .eq('status', 'public')
+    .order('published_at', { ascending: false, nullsFirst: false })
+    .limit(limit);
+
+  if (error || !texts || texts.length === 0) {
+    if (error) console.error('[listPublicTexts] select falhou', error);
+    return [];
+  }
+
+  // Pega autor (display_name) — todos os textos podem ser de pessoas diferentes
+  const userIds = Array.from(new Set(texts.map((t) => t.user_id)));
+  const { data: profiles } = await admin
+    .from('profiles')
+    .select('id, display_name')
+    .in('id', userIds);
+
+  const nameById = new Map<string, string>();
+  for (const p of profiles ?? []) nameById.set(p.id, p.display_name);
+
+  return texts
+    .filter((t) => t.slug)
+    .map((t) => ({
+      slug: t.slug as string,
+      title: t.title || '(sem título)',
+      first_sentence: firstSentence(t.body_html),
+      tags: t.tags ?? [],
+      published_at: t.published_at ?? '',
+      display_name: nameById.get(t.user_id) ?? 'Geovana',
+    }));
+}
+
 /**
  * Busca um texto público pelo slug — usado em /p/[slug] (anon).
  * Retorna title, body, autor, data — formato pronto pra exibição.

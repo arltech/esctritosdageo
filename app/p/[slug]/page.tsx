@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
 import { Container } from '@/components/layout/Container';
@@ -90,6 +91,16 @@ export default async function PublicTextPage({ params }: PageProps) {
             <MessageForm textId={text.id} authorName={text.display_name} />
           </footer>
         </article>
+
+        {/* Link pra index de leituras */}
+        <div className="mt-8 flex justify-center">
+          <Link
+            href="/leituras"
+            className="text-on-surface-variant hover:text-on-surface font-sans inline-flex items-center gap-2 text-sm tracking-wide no-underline transition-colors"
+          >
+            ler outras escritas →
+          </Link>
+        </div>
       </Container>
     </main>
   );
