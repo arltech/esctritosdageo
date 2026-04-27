@@ -37,7 +37,7 @@ export default async function EscritasPage() {
             <Link
               href="/escrever"
               aria-label="Nova escrita"
-              className="bg-primary text-on-primary hover:bg-primary-container shadow-tactile font-sans group inline-flex shrink-0 items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium tracking-wide no-underline transition-all hover:-translate-y-0.5"
+              className="border-outline-variant bg-surface-container-lowest text-on-surface hover:border-on-surface hover:bg-surface-container shadow-tactile font-sans group inline-flex shrink-0 items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium tracking-wide no-underline transition-all hover:-translate-y-0.5"
             >
               <PenLine
                 size={15}
@@ -81,7 +81,7 @@ function EmptyState() {
 
       <Link
         href="/escrever"
-        className="bg-primary text-on-primary hover:bg-primary-container shadow-tactile font-sans group inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium tracking-wide no-underline transition-all hover:-translate-y-0.5"
+        className="border-outline-variant bg-surface-container-lowest text-on-surface hover:border-on-surface hover:bg-surface-container shadow-tactile font-sans group inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-medium tracking-wide no-underline transition-all hover:-translate-y-0.5"
       >
         <PenLine
           size={15}
