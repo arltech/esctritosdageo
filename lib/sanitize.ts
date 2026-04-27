@@ -19,7 +19,13 @@ const editorSchema: SanitizeOptions = {
   tagNames: ['p', 'br', 'mark', 'img', 'span', 'strong', 'em'],
   attributes: {
     ...defaultSchema.attributes,
-    img: ['src', 'alt', ['data-path'], ['data-align', 'left', 'center', 'right']],
+    img: [
+      'src',
+      'alt',
+      ['data-path'],
+      ['data-align', 'left', 'center', 'right'],
+      ['data-size', 'small', 'medium', 'large'],
+    ],
     span: [['data-tag']],
     mark: [],
     p: [],

@@ -357,14 +357,12 @@ blockquote {
 [contenteditable] img[data-align='left'] {
   float: left;
   margin: 0.25rem 1.25rem 0.5rem 0;
-  max-width: 50%;
 }
 
 .prose-editor img[data-align='right'],
 [contenteditable] img[data-align='right'] {
   float: right;
   margin: 0.25rem 0 0.5rem 1.25rem;
-  max-width: 50%;
 }
 
 .prose-editor img[data-align='center'],
@@ -372,6 +370,24 @@ blockquote {
   display: block;
   float: none;
   margin: 1rem auto;
+}
+
+/* Tamanhos de imagem (P / M / G) — combinam com qualquer alinhamento */
+.prose-editor img[data-size='small'],
+[contenteditable] img[data-size='small'] {
+  width: 200px;
+  max-width: 100%;
+}
+
+.prose-editor img[data-size='medium'],
+[contenteditable] img[data-size='medium'] {
+  width: 380px;
+  max-width: 100%;
+}
+
+.prose-editor img[data-size='large'],
+[contenteditable] img[data-size='large'] {
+  width: 100%;
   max-width: 100%;
 }
 
@@ -397,9 +413,15 @@ blockquote {
     to bottom,
     transparent 0,
     transparent 39px,
-    rgba(208, 196, 187, 0.55) 39px,
-    rgba(208, 196, 187, 0.55) 40px
+    rgba(168, 154, 138, 0.35) 39px,
+    rgba(168, 154, 138, 0.35) 40px
   );
+  background-attachment: local;
+}
+
+/* Imagem dentro de notebook-paper: bg branco pra cobrir as linhas atrás */
+.notebook-paper img {
+  background: var(--color-surface-container-lowest);
 }
 
 /* ----------------------------------------------------------------------------

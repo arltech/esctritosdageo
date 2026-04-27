@@ -154,23 +154,35 @@ export function Editor({
     img.src = src;
     img.setAttribute('data-path', path);
     img.setAttribute('data-align', 'center');
+    img.setAttribute('data-size', 'medium');
     img.alt = '';
 
     const wrap = document.createElement('p');
     wrap.appendChild(img);
 
+    // Parágrafo vazio depois pra cursor cair em linha nova clicável
+    const trailing = document.createElement('p');
+    trailing.appendChild(document.createElement('br'));
+
     const sel = window.getSelection();
     if (sel && sel.rangeCount > 0 && editor.contains(sel.getRangeAt(0).startContainer)) {
       const range = sel.getRangeAt(0);
       range.collapse(false);
+      range.insertNode(trailing);
       range.insertNode(wrap);
       const newRange = document.createRange();
-      newRange.setStartAfter(wrap);
+      newRange.setStart(trailing, 0);
       newRange.collapse(true);
       sel.removeAllRanges();
       sel.addRange(newRange);
     } else {
       editor.appendChild(wrap);
+      editor.appendChild(trailing);
+      const newRange = document.createRange();
+      newRange.setStart(trailing, 0);
+      newRange.collapse(true);
+      sel?.removeAllRanges();
+      sel?.addRange(newRange);
     }
     syncBodyToHidden();
   }
@@ -178,6 +190,13 @@ export function Editor({
   function alignSelectedImage(align: 'left' | 'center' | 'right') {
     if (!selectedImg) return;
     selectedImg.setAttribute('data-align', align);
+    syncBodyToHidden();
+    requestAnimationFrame(() => positionPopoverFor(selectedImg));
+  }
+
+  function resizeSelectedImage(size: 'small' | 'medium' | 'large') {
+    if (!selectedImg) return;
+    selectedImg.setAttribute('data-size', size);
     syncBodyToHidden();
     requestAnimationFrame(() => positionPopoverFor(selectedImg));
   }
@@ -271,8 +290,47 @@ export function Editor({
     if (titleRef.current && initialTitle) titleRef.current.value = initialTitle;
     if (editorRef.current && initialBodyHtml) editorRef.current.innerHTML = initialBodyHtml;
     if (bodyHiddenRef.current) bodyHiddenRef.current.value = initialBodyHtml;
+    // Força <p> como separador quando Enter é pressionado (HTML mais limpo)
+    try {
+      document.execCommand('defaultParagraphSeparator', false, 'p');
+    } catch {
+      /* noop */
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps -- só hidrata no mount
   }, []);
+
+  /**
+   * Garante que Enter funciona quando o cursor está num parágrafo que só
+   * contém imagem (browser às vezes não cria <p> novo abaixo, deixando o
+   * cursor preso). Cria parágrafo vazio depois e move o cursor pra ele.
+   */
+  function handleEditorKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key !== 'Enter' || e.shiftKey) return;
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+
+    const range = sel.getRangeAt(0);
+    let node: Node | null = range.startContainer;
+    while (node && node !== editorRef.current) {
+      if (node.nodeType === 1 && (node as Element).tagName === 'P') break;
+      node = node.parentNode;
+    }
+    if (node && node !== editorRef.current && (node as Element).tagName === 'P') {
+      const p = node as HTMLElement;
+      if (p.querySelector('img') && !p.textContent?.trim()) {
+        e.preventDefault();
+        const newP = document.createElement('p');
+        newP.appendChild(document.createElement('br'));
+        p.after(newP);
+        const newRange = document.createRange();
+        newRange.setStart(newP, 0);
+        newRange.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(newRange);
+        syncBodyToHidden();
+      }
+    }
+  }
 
   useEffect(() => {
     function onDocClick(e: MouseEvent) {
@@ -472,12 +530,14 @@ export function Editor({
               suppressContentEditableWarning
               onInput={syncBodyToHidden}
               onClick={handleEditorClick}
+              onKeyDown={handleEditorKeyDown}
               data-placeholder={placeholderBody}
-              className="text-on-surface min-h-[60vh] sm:min-h-[65vh]"
+              className="text-on-surface notebook-paper min-h-[60vh] sm:min-h-[65vh]"
               style={{
                 fontFamily: 'var(--font-writing)',
-                fontSize: '1.25rem',
-                lineHeight: '1.85',
+                fontSize: '1.5rem',
+                lineHeight: '40px',
+                paddingTop: '8px',
               }}
             />
 
@@ -498,6 +558,16 @@ export function Editor({
                 <PopoverBtn label="Direita" onClick={() => alignSelectedImage('right')}>
                   <AlignRight size={14} strokeWidth={1.8} />
                 </PopoverBtn>
+                <span className="bg-white/20 mx-1 h-4 w-px" aria-hidden />
+                <SizeBtn label="Pequena" onClick={() => resizeSelectedImage('small')}>
+                  P
+                </SizeBtn>
+                <SizeBtn label="Média" onClick={() => resizeSelectedImage('medium')}>
+                  M
+                </SizeBtn>
+                <SizeBtn label="Grande" onClick={() => resizeSelectedImage('large')}>
+                  G
+                </SizeBtn>
                 <span className="bg-white/20 mx-1 h-4 w-px" aria-hidden />
                 <PopoverBtn label="Remover" onClick={deleteSelectedImage}>
                   <Trash2 size={14} strokeWidth={1.8} />
@@ -569,6 +639,28 @@ function PopoverBtn({
       aria-label={label}
       title={label}
       className="hover:bg-white/10 flex h-7 w-7 items-center justify-center rounded transition-colors"
+    >
+      {children}
+    </button>
+  );
+}
+
+function SizeBtn({
+  label,
+  onClick,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      title={label}
+      className="hover:bg-white/10 font-sans flex h-7 w-7 items-center justify-center rounded text-xs font-semibold transition-colors"
     >
       {children}
     </button>
